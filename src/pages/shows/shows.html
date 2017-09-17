@@ -1,0 +1,33 @@
+<ion-header>
+
+    <ion-navbar>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="card-background-page">
+    <ion-card *ngFor="let show of shows">
+        <ion-card-header>
+            <div class="card-title">{{show.title}}</div>
+        </ion-card-header>
+        <ion-card-content>
+            <p>{{show.description}}</p>
+        </ion-card-content>
+
+        <ion-row no-padding>
+            <ion-col text-center>
+                <button ion-button clear small color="grey" icon-start (click)='play();'>
+                    <ion-icon name='md-play'></ion-icon>
+                    Listen
+                  </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button clear small color="grey" icon-start (click)='save();'>
+                        <ion-icon name='star'></ion-icon>
+                        Save
+                      </button>
+            </ion-col>
+        </ion-row>
+
+    </ion-card>
+</ion-content>
