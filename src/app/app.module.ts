@@ -11,6 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MaloneyService } from '../services/MaloneyService'
 import { SavedShowsService } from '../services/SavedShowsService'
+import { IonicAudioModule, WebAudioProvider, CordovaMediaProvider, defaultAudioProviderFactory } from 'ionic-audio';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { SavedShowsService } from '../services/SavedShowsService'
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicAudioModule.forRoot(defaultAudioProviderFactory)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

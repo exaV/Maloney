@@ -17,7 +17,7 @@
         <ion-row no-padding>
             <ion-col text-center>
                 <button ion-button clear small color="grey" icon-start (click)='play();'>
-                    <ion-icon name='md-play'></ion-icon>
+                    <ion-icon [name]="audioIcon"></ion-icon>
                     Listen
                   </button>
             </ion-col>
@@ -28,6 +28,9 @@
                       </button>
             </ion-col>
         </ion-row>
-
+        <ion-item ng-hide=registered ui-sref="playing">
+            <ion-range min="0" max="100" [(ngModel)]="audioPosition" color="secondary" (ionChange)="controlProgressBar($event)"></ion-range>
+        </ion-item>
     </ion-card>
+
 </ion-content>
