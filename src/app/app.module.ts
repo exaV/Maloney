@@ -1,3 +1,4 @@
+import { MusicControlsComponent } from './../components/music-controls/music-controls';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -11,28 +12,25 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MaloneyService } from '../services/MaloneyService'
 import { SavedShowsService } from '../services/SavedShowsService'
-import { IonicAudioModule, WebAudioProvider, CordovaMediaProvider, defaultAudioProviderFactory } from 'ionic-audio';
-
-
 @NgModule({
   declarations: [
     MyApp,
     ShowsPage,
     SavedPage,
-    TabsPage
-  ],
+    TabsPage,
+    MusicControlsComponent    
+    ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
-    IonicAudioModule.forRoot(defaultAudioProviderFactory)
-  ],
+    IonicModule.forRoot(MyApp)
+    ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     ShowsPage,
     SavedPage,
     TabsPage
-  ],
+    ],
   providers: [
     StatusBar,
     SplashScreen,

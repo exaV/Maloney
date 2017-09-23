@@ -9,7 +9,6 @@ import { SavedShowsService } from "../../services/SavedShowsService"
 })
 export class SavedPage {
 
-    private shows: MaloneyShow[];
 
     constructor(public navCtrl: NavController, private savedShowService: SavedShowsService, private navParams: NavParams) {
         //TODO title

@@ -1,3 +1,4 @@
+import { MusicControlsComponent } from './../../components/music-controls/music-controls';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MaloneyShow } from "../../model/MaloneyShow";
@@ -5,21 +6,21 @@ import { MaloneyService } from "../../services/MaloneyService"
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Media, MediaObject } from '@ionic-native/media';
-
 @Component({
     selector: 'page-shows',
     templateUrl: 'shows.html'
 })
 export class ShowsPage {
 
-    private shows: MaloneyShow[];
+    shows: MaloneyShow[];
+    isAudioPlaying: Boolean = false;
+    audioPosition: Number;
 
     private title;
     private saveDirName = "savedShows";
     private link = 'https://srfaudio-a.akamaihd.net/delivery/world/a8c7eff0-c341-4f9f-add7-6bbed450375d.mp3?hdnts=exp%3D1505604873~acl%3D%2Fdelivery%2Fworld%2F%2A~hmac%3D99adbd9886ee9c86d96a2b4ec85842a0f27bf90845c258347beb3c54bc509763';
     private currentTrack: MediaObject;
-    private isAudioPlaying: Boolean = false;
-    private audioPosition: Number;
+
     private audioIcon = "md-play";
 
     constructor(public navCtrl: NavController,

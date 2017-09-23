@@ -16,8 +16,9 @@
 
         <ion-row no-padding>
             <ion-col text-center>
-                <button ion-button clear small color="grey" icon-start (click)='play();'>
-                    <ion-icon [name]="audioIcon"></ion-icon>
+                <button  ion-button clear small color="grey" icon-start (click)='play();'>
+                    <ion-icon *ngIf="isAudioPlaying" name="pause"></ion-icon>
+                    <ion-icon *ngIf="!isAudioPlaying" name="play"></ion-icon>
                     Listen
                   </button>
             </ion-col>
@@ -34,3 +35,7 @@
     </ion-card>
 
 </ion-content>
+
+<ion-footer>
+    <music-controls *ngIf="isAudioPlaying"></music-controls>
+</ion-footer>
