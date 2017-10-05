@@ -12,25 +12,30 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MaloneyService } from '../services/MaloneyService'
 import { SavedShowsService } from '../services/SavedShowsService'
+
+import { HttpClientModule } from '@angular/common/http';
+
+
 @NgModule({
   declarations: [
     MyApp,
     ShowsPage,
     SavedPage,
     TabsPage,
-    MusicControlsComponent    
-    ],
+    MusicControlsComponent
+  ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
-    ],
+  ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     ShowsPage,
     SavedPage,
     TabsPage
-    ],
+  ],
   providers: [
     StatusBar,
     SplashScreen,
