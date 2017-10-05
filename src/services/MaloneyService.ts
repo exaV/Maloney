@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { MaloneyShow } from "../model/MaloneyShow";
-import htmlparser from 'htmlparser2'
 import request from 'request'
+import { HttpClient } from '@angular/common/http';
 
 /*
   Generated class for the RunServiceProvider provider.
