@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { MaloneyShow } from "../model/MaloneyShow";
 import request from 'request'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 /*
   Generated class for the RunServiceProvider provider.
@@ -50,21 +50,18 @@ export class MaloneyService {
     console.log("requesting " + url)
 
 
-    fetch(url, { mode: 'no-cors' })
-      .then(res => {
+    fetch(url, { mode: 'no-cors' }).then(res => console.log("fetch worked" + res.statusText)).catch(e => "fetch failed" + e)
 
-        console.log("request succeeded");
-        console.log(res)
-        console.log(res.status)
-
-
-
-
-      }).catch(error => console.log(error))
+    this.http.get(
+      url,
+      {}
+    ).subscribe(data => {
+      console.log(data);
+    })
 
 
     //TODO check whether we need to check website with timestamp of last request
-    //TODO fetch list of ids from website
+    //TODO fetch list of ids from website+
     //TODO fetch first 10 items
     //TODO fetch next 10 items (only have to do this once)
     //TODO parse to retrieve ids
