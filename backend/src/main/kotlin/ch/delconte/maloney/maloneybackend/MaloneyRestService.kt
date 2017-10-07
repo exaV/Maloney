@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
-@CrossOrigin
 @RequestMapping("/shows")
 @RestController
 class MaloneyRestService @Autowired constructor(private val maloneyService: MaloneyShowService) {
@@ -16,6 +15,7 @@ class MaloneyRestService @Autowired constructor(private val maloneyService: Malo
     @Autowired
     lateinit var maloneyScraper: MaloneyScrapeService
 
+    @CrossOrigin
     @RequestMapping(method = arrayOf(RequestMethod.GET))
     fun getShows(): List<MaloneyShowDTO> {
         return maloneyService.retrieveShows()

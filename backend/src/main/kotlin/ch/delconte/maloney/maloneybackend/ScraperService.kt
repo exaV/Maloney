@@ -62,8 +62,12 @@ class MaloneyScrapeService @Autowired constructor(private val maloneyShowService
 
     fun fetchfromDefault(limit: Int) {
         //    val url = "file:///C:/Users/pdcwi/Downloads/srf%20maloney%20offline%20kopie/Maloney%20-%20Sendungen%20-%20SRF.html"
-        val url = """C:/Users/pdcwi/Downloads/srf maloney offline kopie/sendungen.html"""
-//    val url = "https://www.srf.ch/sendungen/maloney"
+       // val url = """C:/Users/pdcwi/Downloads/srf maloney offline kopie/sendungen.html"""
+       // val urlRecent = "https://m.srf.ch/sendungen/maloney/layout/set/ajax/Sendungen/maloney/sendungen"
+       // val urlOffset = "https://m.srf.ch/sendungen/maloney/layout/set/ajax/Sendungen/maloney/sendungen/(offset)/10"
+
+
+        val url = "https://www.srf.ch/sendungen/maloney"
 //    val url = """C:\Users\pdcwi\Downloads\srf maloney offline kopie\Maloney - Sendungen - SRF.html"""
 //    val popupurl = "https://www.srf.ch/play/radio/popupaudioplayer?id=12557c6f-84e5-4275-b935-11b9f9566361"
         parse(url,limit)

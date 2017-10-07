@@ -18,10 +18,6 @@ export class ShowsPage {
 
     private title;
     private saveDirName = "savedShows";
-    //private link = 'https://srfaudio-a.akamaihd.net/delivery/world/a8c7eff0-c341-4f9f-add7-6bbed450375d.mp3?hdnts=exp%3D1505604873~acl%3D%2Fdelivery%2Fworld%2F%2A~hmac%3D99adbd9886ee9c86d96a2b4ec85842a0f27bf90845c258347beb3c54bc509763';
-    //private link = 'https://srfaudio-a.akamaihd.net/delivery/world/a8c7eff0-c341-4f9f-add7-6bbed450375d.mp3';
-
-    private link = "https://www.srf.ch/play/radio/popupaudioplayer?id=c23b1658-c3be-4b2e-ae6f-4b06b477c0ad"
     private currentTrack: MediaObject;
 
     private audioIcon = "md-play";
@@ -36,7 +32,7 @@ export class ShowsPage {
             .catch((err) => console.log(err));
     }
 
-    play() {
+    play(show: MaloneyShow) {
         console.log('play');
 
         if (this.isAudioPlaying == true) {
@@ -45,8 +41,9 @@ export class ShowsPage {
             this.audioIcon = "md-play";
             console.log("paused");
         } else {
-            this.currentTrack = new Media().create(this.link);
-            this.currentTrack.errorCallback = function (error: MediaError) { console.log("media error: " + error.code) };
+            console.log("playing " + show.primarySourceUrl)
+            this.currentTrack = new Media().create(show.primarySourceUrl);
+            //this.currentTrack.errorCallback = function (error: MediaError) { console.log("media error: " + error.code) };
             this.currentTrack.play();
             this.isAudioPlaying = true;
             this.audioIcon = "md-pause";
