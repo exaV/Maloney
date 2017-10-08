@@ -1,0 +1,5 @@
+<!-- Generated template for the TextShrinkComponent component -->
+<div [ngClass]="{textshow: shouldShow, texthide: !shouldShow}">{{text}}
+  <button *ngIf="shouldShow" (click)="shouldShow = false">weniger</button>
+</div>
+<button *ngIf="!shouldShow" (click)="shouldShow = true">...</button>

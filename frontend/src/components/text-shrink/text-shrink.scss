@@ -1,0 +1,12 @@
+text-shrink {
+    font-size: 16px;
+    line-height: 16px;
+    .texthide {
+
+        height: 33px;
+        overflow: hidden;        
+    }
+   .textshow {
+        overflow: hidden;
+   }
+}

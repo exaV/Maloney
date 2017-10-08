@@ -15,7 +15,7 @@ import { SavedShowsService } from '../services/SavedShowsService'
 
 import { HttpClientModule } from '@angular/common/http';
 import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
-
+import { TextShrinkComponent } from '../components/text-shrink/text-shrink';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/s
     SavedPage,
     TabsPage,
     MusicControlsComponent,
-    ShrinkingSegmentHeader
+    ShrinkingSegmentHeader,
+    TextShrinkComponent
   ],
   imports: [
     BrowserModule,
