@@ -33,21 +33,18 @@ export class ShowsPage {
     }
 
     play(show: MaloneyShow) {
-        console.log('play');
-
         if (this.isAudioPlaying == true) {
             this.currentTrack.pause();
             this.isAudioPlaying = false;
             this.audioIcon = "md-play";
             console.log("paused");
         } else {
-            console.log("playing " + show.primarySourceUrl)
             this.currentTrack = new Media().create(show.primarySourceUrl);
             //this.currentTrack.errorCallback = function (error: MediaError) { console.log("media error: " + error.code) };
             this.currentTrack.play();
             this.isAudioPlaying = true;
             this.audioIcon = "md-pause";
-            console.log("playing");
+            console.log("playing " + show.primarySourceUrl)
         }
 
     }
@@ -61,12 +58,12 @@ export class ShowsPage {
         }
     }
 
-    save() {
+    save(show: MaloneyShow) {
         console.log("save");
         this.initSaveDir();
         let saveDir = new File().dataDirectory;
         //TODO fix path
-        new FileTransfer().create().download(this.link, saveDir + this.saveDirName)
+        new FileTransfer().create().download(show.primarySourceUrl, saveDir + this.saveDirName)
             .then((file) => {
                 console.log('downlaod succeeded');
                 var name = "sfsdfssfasn2n32";
