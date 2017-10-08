@@ -1,26 +1,39 @@
 import { MusicControlsComponent } from './../../components/music-controls/music-controls';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { MaloneyShow } from "../../model/MaloneyShow";
+import { MaloneyShow, MaloneyTrack } from "../../model/MaloneyShow";
 import { MaloneyService } from "../../services/MaloneyService"
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Media, MediaObject } from '@ionic-native/media';
+import { assert } from 'assert';
+
+
+class CurrentTrack {
+    readonly track: MaloneyTrack;
+    readonly media: MediaObject;
+    audioPosition: Number = 0;
+
+    constructor(track: MaloneyTrack, media: MediaObject) {
+        this.track = track;
+        this.media = media;
+    }
+}
+
 @Component({
     selector: 'page-shows',
-    templateUrl: 'shows.html'
+    templateUrl: 'shows.html',
 })
 export class ShowsPage {
 
-    shows: MaloneyShow[];
+    tracks: MaloneyTrack[];
+
     isAudioPlaying: Boolean = false;
     audioPosition: Number;
 
     private title;
     private saveDirName = "savedShows";
-    private currentTrack: MediaObject;
-
-    private audioIcon = "md-play";
+    private currentTrack: CurrentTrack = null;
 
     constructor(public navCtrl: NavController,
         private maloneyService: MaloneyService,
@@ -28,50 +41,89 @@ export class ShowsPage {
         //TODO title
         this.title = "what";
         this.maloneyService.getRuntypes()
-            .then((shows) => this.shows = shows)
+            .then((shows) => {
+                console.log("received " + shows.length + " shows");
+                this.tracks = shows.map(show => new MaloneyTrack(show))
+            })
             .catch((err) => console.log(err));
     }
 
-    play(show: MaloneyShow) {
-        if (this.isAudioPlaying == true) {
-            this.currentTrack.pause();
-            this.isAudioPlaying = false;
-            this.audioIcon = "md-play";
-            console.log("paused");
-        } else {
-            this.currentTrack = new Media().create(show.primarySourceUrl);
-            //this.currentTrack.errorCallback = function (error: MediaError) { console.log("media error: " + error.code) };
-            this.currentTrack.play();
-            this.isAudioPlaying = true;
-            this.audioIcon = "md-pause";
-            console.log("playing " + show.primarySourceUrl)
+    play(track: MaloneyTrack) {
+        if (this.currentTrack !== null && track === this.currentTrack.track) {
+            if (this.isAudioPlaying == true) {
+                this.pauseCurrentTrack();
+            } else {
+                this.resumeCurrentTrack();
+            }
         }
+        else {
+            this.startTrack(track);
+        }
+    }
+
+    startTrack(track: MaloneyTrack) {
+        if (this.isAudioPlaying) this.pauseCurrentTrack(true);
+        let url = track.show.primarySourceUrl;
+        this.currentTrack = new CurrentTrack(track, new Media().create(url));
+        //this.currentTrack.errorCallback = function (error: MediaError) { console.log("media error: " + error.code) };
+        this.currentTrack.media.play();
+        track.playing = true;
+        this.isAudioPlaying = true;
+        console.log("starting track " + track.show.title + " (" + url + ")")
+    }
+
+    pauseCurrentTrack(stop: boolean = false) {
+        if (stop) {
+            this.currentTrack.media.stop();
+            console.log("paused " + this.currentTrack.track.show.title);
+        } else {
+            this.currentTrack.media.pause();
+            console.log("stopped " + this.currentTrack.track.show.title);
+        }
+        this.isAudioPlaying = false;
+        this.currentTrack.track.playing = false;
+    }
+
+    resumeCurrentTrack() {
+        this.isAudioPlaying = true;
+        this.currentTrack.track.playing = true;
+        this.currentTrack.media.play();
+        console.log("resuming " + this.currentTrack.track.show.title);
 
     }
+
 
     controlProgressBar(event) {
         const self = this;
-        if (this.isAudioPlaying == true) {
-            this.currentTrack.getCurrentPosition().then((position) => {
-                this.audioPosition = position;
-            })
-        }
+        //TODO
     }
 
-    save(show: MaloneyShow) {
-        console.log("save");
-        this.initSaveDir();
-        let saveDir = new File().dataDirectory;
-        //TODO fix path
-        new FileTransfer().create().download(show.primarySourceUrl, saveDir + this.saveDirName)
-            .then((file) => {
-                console.log('downlaod succeeded');
-                var name = "sfsdfssfasn2n32";
-            })
-            .catch((err) => {
-                console.log('download failed')
-                console.log(err)
-            });
+    save(track: MaloneyTrack) {
+        if (track.saved) {
+            console.log("un-saving " + track.show.title);
+            track.saved = false;
+
+
+        } else {
+
+
+            console.log("saving " + track.show.title);
+            this.initSaveDir();
+            let saveDir = new File().dataDirectory;
+            //TODO fix path
+            new FileTransfer().create().download(track.show.primarySourceUrl, saveDir + this.saveDirName)
+                .then((file) => {
+                    console.log('downlaod succeeded');
+                    var name = "sfsdfssfasn2n32";
+                })
+                .catch((err) => {
+                    console.log('download failed')
+                    console.log(err)
+                });
+            track.saved = true;
+        }
+
+
 
 
     }

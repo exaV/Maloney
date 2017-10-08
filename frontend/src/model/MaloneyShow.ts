@@ -1,6 +1,16 @@
 export class MaloneyShow {
-    id: number;
-    title: string;
-    description: string;
-    primarySourceUrl: string;
+    readonly id: number;
+    readonly title: string;
+    readonly description: string;
+    readonly primarySourceUrl: string;
+}
+
+export class MaloneyTrack {
+    readonly show: MaloneyShow;
+    playing: boolean = false;
+    saved: boolean = false;
+
+    constructor(show: MaloneyShow) {
+        this.show = show;
+    }
 }

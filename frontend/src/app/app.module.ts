@@ -14,6 +14,7 @@ import { MaloneyService } from '../services/MaloneyService'
 import { SavedShowsService } from '../services/SavedShowsService'
 
 import { HttpClientModule } from '@angular/common/http';
+import { ShrinkingSegmentHeader } from '../components/shrinking-segment-header/shrinking-segment-header';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
     ShowsPage,
     SavedPage,
     TabsPage,
-    MusicControlsComponent
+    MusicControlsComponent,
+    ShrinkingSegmentHeader
   ],
   imports: [
     BrowserModule,

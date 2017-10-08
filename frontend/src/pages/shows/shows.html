@@ -1,37 +1,34 @@
 <ion-header>
-
-    <ion-navbar>
-    </ion-navbar>
+    <shrinking-segment-header [scrollArea]="myContent" headerHeight="200">
+        <img alt="maloney logo" src="https://www.srf.ch/static/radio/modules/dynimages/624/srf-3/00-2015/standardbilder/261957.maloneyneuepg.jpg">
+    </shrinking-segment-header>
 
 </ion-header>
 
-<ion-content class="card-background-page">
-    <ion-card *ngFor="let show of shows">
+<ion-content fullscreen #myContent class="card-background-page">
+    <ion-card *ngFor="let track of tracks">
         <ion-card-header>
-            <div class="card-title">{{show.title}}</div>
+            <div class="card-title">{{track.show.title}}</div>
         </ion-card-header>
         <ion-card-content>
-            <p>{{show.description}}</p>
+            <p>{{track.show.description}}</p>
         </ion-card-content>
 
         <ion-row no-padding>
             <ion-col text-center>
-                <button ion-button clear small color="grey" icon-start (click)='play(show);'>
-                    <ion-icon *ngIf="isAudioPlaying" name="pause"></ion-icon>
-                    <ion-icon *ngIf="!isAudioPlaying" name="play"></ion-icon>
+                <button ion-button clear small color="grey" icon-start (click)='play(track);'>
+                    <ion-icon *ngIf="track.playing" name="pause"></ion-icon>
+                    <ion-icon *ngIf="!track.playing" name="play"></ion-icon>
                     Listen
-                  </button>
+                </button>
             </ion-col>
             <ion-col>
-                <button ion-button clear small color="grey" icon-start (click)='save();'>
-                        <ion-icon name='star'></ion-icon>
-                        Save
-                      </button>
+                <button ion-button clear small color="grey" icon-start (click)='save(track);'>
+                    <ion-icon name='star'></ion-icon>
+                    Save
+                </button>
             </ion-col>
         </ion-row>
-        <ion-item ng-hide=registered ui-sref="playing">
-            <ion-range min="0" max="100" [(ngModel)]="audioPosition" color="secondary" (ionChange)="controlProgressBar($event)"></ion-range>
-        </ion-item>
     </ion-card>
 
 </ion-content>
