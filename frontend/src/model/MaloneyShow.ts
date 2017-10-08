@@ -1,3 +1,5 @@
+import { Media, MediaObject } from '@ionic-native/media';
+
 export class MaloneyShow {
     readonly id: number;
     readonly title: string;
@@ -12,5 +14,16 @@ export class MaloneyTrack {
 
     constructor(show: MaloneyShow) {
         this.show = show;
+    }
+}
+
+export class CurrentTrack {
+    readonly track: MaloneyTrack;
+    readonly media: MediaObject;
+    audioPosition: Number = 0;
+
+    constructor(track: MaloneyTrack, media: MediaObject) {
+        this.track = track;
+        this.media = media;
     }
 }

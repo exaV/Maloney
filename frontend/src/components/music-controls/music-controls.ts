@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+
+import { MaloneyShow, MaloneyTrack, CurrentTrack } from "../../model/MaloneyShow";
+
 /**
  * Generated class for the MusicControlsComponent component.
  *
@@ -12,8 +15,8 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class MusicControlsComponent {
 
-  text: string;
-  audioPosition : Number = 0
+  @Input('currentTrack') currentTrack: CurrentTrack;
+
 
   constructor() {
   }

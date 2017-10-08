@@ -24,7 +24,9 @@
             </ion-col>
             <ion-col>
                 <button ion-button clear small color="grey" icon-start (click)='save(track);'>
-                    <ion-icon name='star'></ion-icon>
+                    <ion-icon *ngIf="track.saved" name='star'></ion-icon>
+                    <ion-icon *ngIf="!track.saved" name='star-outline'></ion-icon>
+
                     Save
                 </button>
             </ion-col>
@@ -34,5 +36,5 @@
 </ion-content>
 
 <ion-footer>
-    <music-controls *ngIf="isAudioPlaying"></music-controls>
+    <music-controls [currentTrack]="currentTrack" *ngIf="isAudioPlaying"></music-controls>
 </ion-footer>

@@ -1,7 +1,7 @@
 import { MusicControlsComponent } from './../../components/music-controls/music-controls';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { MaloneyShow, MaloneyTrack } from "../../model/MaloneyShow";
+import { MaloneyShow, MaloneyTrack, CurrentTrack } from "../../model/MaloneyShow";
 import { MaloneyService } from "../../services/MaloneyService"
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
@@ -9,16 +9,6 @@ import { Media, MediaObject } from '@ionic-native/media';
 import { assert } from 'assert';
 
 
-class CurrentTrack {
-    readonly track: MaloneyTrack;
-    readonly media: MediaObject;
-    audioPosition: Number = 0;
-
-    constructor(track: MaloneyTrack, media: MediaObject) {
-        this.track = track;
-        this.media = media;
-    }
-}
 
 @Component({
     selector: 'page-shows',
@@ -30,10 +20,11 @@ export class ShowsPage {
 
     isAudioPlaying: Boolean = false;
     audioPosition: Number;
+    currentTrack: CurrentTrack = null;
+
 
     private title;
     private saveDirName = "savedShows";
-    private currentTrack: CurrentTrack = null;
 
     constructor(public navCtrl: NavController,
         private maloneyService: MaloneyService,
