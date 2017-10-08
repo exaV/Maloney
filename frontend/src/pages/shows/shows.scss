@@ -1,12 +1,53 @@
 page-shows{
 
+    .content{
+        background: #d0cec2;
+    }
+
+    .card{
+        background-color: #fff;
+        width: 100%;
+        margin: 0;
+        margin-bottom: 5px;
+        position: relative;
+    }
+
+    .card:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .card-controls{
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        margin-top: 0;
+        text-align: center;
+        
+        .col{
+            margin-bottom: 0;
+            margin-top: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            
+            .button{                
+                padding-top: 0;
+                padding-bottom: 0;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
+        }
+
+
+    }
+
+
     shrinking-segment-header {
 
-        background-color: #363636;
+        background-color: #a2d1c7;
         color: #ffffff;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: top;
+        justify-content: top;
         
         img {
             width: auto;

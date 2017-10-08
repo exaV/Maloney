@@ -6,7 +6,8 @@ text-shrink {
         height: 33px;
         overflow: hidden;        
     }
-   .textshow {
-        overflow: hidden;
+   .textshow { 
+        transition: overflow 1s;
+        overflow: visible;
    }
 }

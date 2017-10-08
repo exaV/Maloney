@@ -35,7 +35,7 @@ export class ShrinkingSegmentHeader {
 
       this.newHeaderHeight = this.headerHeight - ev.scrollTop;
 
-      if (this.newHeaderHeight < 0) {
+      if (this.newHeaderHeight < 40) {
         this.newHeaderHeight = 0;
       }
 

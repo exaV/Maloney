@@ -1,5 +1,5 @@
 <ion-header>
-    <shrinking-segment-header [scrollArea]="myContent" headerHeight="200">
+    <shrinking-segment-header [scrollArea]="myContent" headerHeight="230">
         <img alt="maloney logo" src="https://www.srf.ch/static/radio/modules/dynimages/624/srf-3/00-2015/standardbilder/261957.maloneyneuepg.jpg">
     </shrinking-segment-header>
 
@@ -14,20 +14,17 @@
             <text-shrink [text]="track.show.description"></text-shrink>
         </ion-card-content>
 
-        <ion-row no-padding>
+        <ion-row class="card-controls" no-padding>
             <ion-col text-center>
-                <button ion-button clear small color="grey" icon-start (click)='play(track);'>
+                <button ion-button clear medium icon-start (click)='play(track);'>
                     <ion-icon *ngIf="track.playing" name="pause"></ion-icon>
                     <ion-icon *ngIf="!track.playing" name="play"></ion-icon>
-                    Listen
                 </button>
             </ion-col>
             <ion-col>
-                <button ion-button clear small color="grey" icon-start (click)='save(track);'>
+                <button ion-button clear medium icon-start (click)='save(track);'>
                     <ion-icon *ngIf="track.saved" name='star'></ion-icon>
                     <ion-icon *ngIf="!track.saved" name='star-outline'></ion-icon>
-
-                    Save
                 </button>
             </ion-col>
         </ion-row>
