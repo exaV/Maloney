@@ -27,3 +27,4 @@ nbdist/
 
 /maloneyDB.mv.db
 out/
+/serverconfig.txt
