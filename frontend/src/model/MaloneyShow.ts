@@ -1,10 +1,18 @@
 import { Media, MediaObject } from '@ionic-native/media';
+import { preserveWhitespacesDefault } from '@angular/compiler/src/config';
 
 export class MaloneyShow {
-    readonly id: number;
+    readonly id: string;
     readonly title: string;
     readonly description: string;
     readonly primarySourceUrl: string;
+
+    constructor(id: string, title: string, description: string, primarySourceUrl: string) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.primarySourceUrl = primarySourceUrl;
+    }
 }
 
 export class MaloneyTrack {

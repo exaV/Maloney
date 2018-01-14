@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 import { MaloneyShow } from "../model/MaloneyShow";
 import request from 'request'
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { parse } from "romagny13-html-parser";
 
 /*
   Generated class for the RunServiceProvider provider.
@@ -53,27 +54,34 @@ export class MaloneyService {
   }
 
   fetchFromBackend() {
-    const url = "http://localhost:8080/shows"
-    console.log("fetching shows from backend at " + url);
-    return this.http.get(url).toPromise() as Promise<MaloneyShow[]>;
+    return this.scrape();
+    //const url = "http://localhost:8080/shows"
+    //const url = "http://86.119.33.130:8080/backend-0.0.1-SNAPSHOT/shows";
+    //console.log("fetching shows from backend at " + url);
+    //return this.http.get(url).toPromise() as Promise<MaloneyShow[]>;
   }
 
-  scrape() {
+
+
+  scrape(): Promise<MaloneyShow[]> {
     const url = "https://www.srf.ch/sendungen/maloney/layout/set/ajax/Sendungen/maloney/sendungen";
 
     //TODO handle async
     console.log("requesting " + url)
 
+    let test = fetch(url).then(res => fetch(url))
 
-    fetch(url, { mode: 'no-cors' }).then(res => console.log("fetch worked" + res.statusText)).catch(e => "fetch failed" + e)
+    let e = fetch(url).then(res => res.text()).then(s => {
+      let nodes = parse(s);
 
-    this.http.get(
-      url,
-      {}
-    ).subscribe(data => {
-      console.log(data);
-    })
-
+      console.log("nodes");
+      console.log(nodes);
+      let episodespast = nodes[0]["children"][1]["children"]
+      console.log("found " + episodespast.length + " episodes");
+      return episodespast
+        .map(episode => this.fetchEpisodeDetailsJson(episode["innerHTML"]))
+        .map(detailsReq => detailsReq.then(details => this.parseEpisode(details)));
+    });
 
     //TODO check whether we need to check website with timestamp of last request
     //TODO fetch list of ids from website+
@@ -82,7 +90,32 @@ export class MaloneyService {
     //TODO parse to retrieve ids
     //TODO grab json with episode details for each id
     //TODO save episodes to db-file (make sure to avoid duplicates)
+    return e.then(it => Promise.all(it));
 
+  }
 
+  private fetchEpisodeDetailsJson(episode: String): Promise<JSON> {
+    let s = episode.match("href=\"https:\/\/www.srf.ch\/play\/radio\/popupaudioplayer\\?id=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\"");
+    let id = s[0].match("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")[0];
+
+    let url = `https://il.srgssr.ch/integrationlayer/2.0/srf/mediaComposition/audio/${id}.json`;
+    console.log(`fetching episode details from ${url}`);
+    return fetch(url).then(res => res.text()).then(text => JSON.parse(text));
+
+  }
+
+  private parseEpisode(json: JSON): MaloneyShow {
+    console.log("details body");
+    console.log(json["chapterList"]);
+    let details = json["chapterList"][0];
+    let mp3Url = null;
+    details["resourceList"].forEach(element => {
+      if (element["protocol"] === "HTTPS") {
+        mp3Url = element["url"];
+      }
+    });
+    let show: MaloneyShow = new MaloneyShow(details["id"], details["title"], details["lead"], mp3Url)
+    console.log(`found show ${show.title} at ${show.primarySourceUrl} (${show.id},${show.description})`)
+    return show;
   }
 }

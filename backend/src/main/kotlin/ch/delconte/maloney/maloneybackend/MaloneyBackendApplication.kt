@@ -18,7 +18,7 @@ class MaloneyBackendApplication {
 
     @PostConstruct
     fun runScraperOnce() {
-//        maloneyScraper.fetchfromDefault(1)
+        maloneyScraper.fetchfromDefault(1)
         val savedshows = maloneyService.retrieveShows()
         logger.info { "database contains ${savedshows.size} saved shows" }
         logger.debug { "saved shows: "+ savedshows.map { "\n$it" } }

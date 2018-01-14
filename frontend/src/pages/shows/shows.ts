@@ -7,8 +7,8 @@ import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { Media, MediaObject } from '@ionic-native/media';
 import { assert } from 'assert';
-
-
+import { Platform } from 'ionic-angular';
+import { MusicControls, MusicControlsOptions } from '@ionic-native/music-controls';
 
 @Component({
     selector: 'page-shows',
@@ -21,14 +21,15 @@ export class ShowsPage {
     isAudioPlaying: Boolean = false;
     audioPosition: Number;
     currentTrack: CurrentTrack = null;
-
+    musicControls: MusicControls;
 
     private title;
     private saveDirName = "savedShows";
 
     constructor(public navCtrl: NavController,
         private maloneyService: MaloneyService,
-        private navParams: NavParams, ) {
+        private navParams: NavParams,
+        platform: Platform) {
         //TODO title
         this.title = "what";
         this.maloneyService.getRuntypes()
@@ -37,6 +38,8 @@ export class ShowsPage {
                 this.tracks = shows.map(show => new MaloneyTrack(show))
             })
             .catch((err) => console.log(err));
+        this.musicControls = new MusicControls();
+
     }
 
     play(track: MaloneyTrack) {
@@ -60,12 +63,47 @@ export class ShowsPage {
         this.currentTrack.media.play();
         track.playing = true;
         this.isAudioPlaying = true;
-        console.log("starting track " + track.show.title + " (" + url + ")")
+        console.log("starting track " + track.show.title + " (" + url + ")");
+        this.musicControls.create({
+            track: track.show.title,		// optional, default : ''
+            artist: 'Philip Maloney',						// optional, default : ''
+            cover: 'icon.png',		// optional, default : nothing
+            // cover can be a local path (use fullpath 'file:///storage/emulated/...', or only 'my_image.jpg' if my_image.jpg is in the www folder of your app)
+            //			 or a remote url ('http://...', 'https://...', 'ftp://...')
+            isPlaying: true,							// optional, default : true
+            dismissable: true,							// optional, default : false
+
+            // hide previous/next/close buttons:
+            hasPrev: false,		// show previous button, optional, default: true
+            hasNext: false,		// show next button, optional, default: true
+            hasClose: true,		// show close button, optional, default: false
+
+            // iOS only, optional
+            album: 'Die haarsträubenden Fälle',     // optional, default: ''
+            duration: this.currentTrack.media.getDuration(), // optional, default: 0
+            elapsed: 10, // optional, default: 0
+
+            hasSkipForward: true, //optional, default: false. true value overrides hasNext.
+            hasSkipBackward: true, //optional, default: false. true value overrides hasPrev.
+            skipForwardInterval: 15, //optional. default: 0.
+            skipBackwardInterval: 15, //optional. default: 0. 
+
+            // Android only, optional
+            // text displayed in the status bar when the notification (and the ticker) are updated
+            ticker: track.show.title
+        }).then(controls => {
+        }).catch(error => {
+            console.log("failed to create music controls: " + error)
+        });
+        this.musicControls.subscribe().subscribe(action => this.handleMusicControlsEvent(action));
+        this.musicControls.listen();
+        new MusicControls().destroy()
     }
 
     pauseCurrentTrack(stop: boolean = false) {
         if (stop) {
             this.currentTrack.media.stop();
+            this.musicControls.destroy();
             console.log("paused " + this.currentTrack.track.show.title);
         } else {
             this.currentTrack.media.pause();
@@ -73,14 +111,66 @@ export class ShowsPage {
         }
         this.isAudioPlaying = false;
         this.currentTrack.track.playing = false;
+        this.musicControls.updateIsPlaying(false);
+
     }
 
     resumeCurrentTrack() {
+        this.musicControls.updateIsPlaying(true);
         this.isAudioPlaying = true;
         this.currentTrack.track.playing = true;
         this.currentTrack.media.play();
         console.log("resuming " + this.currentTrack.track.show.title);
+    }
 
+    handleMusicControlsEvent(action) {
+
+        const message = JSON.parse(action).message;
+        switch (message) {
+            case 'music-controls-next':
+                // Do something
+                break;
+            case 'music-controls-previous':
+                // Do something
+                break;
+            case 'music-controls-pause':
+                this.pauseCurrentTrack();
+                break;
+            case 'music-controls-play':
+                this.resumeCurrentTrack();
+                break;
+            case 'music-controls-destroy':
+                console.log("music-controls-destroy");
+                this.pauseCurrentTrack(true);
+                break;
+            // External controls (iOS only)
+            case 'music-controls-toggle-play-pause':
+                // Do something
+                break;
+            case 'music-controls-seek-to':
+                const seekToInSeconds = JSON.parse(action).position;
+                this.musicControls.updateElapsed({
+                    elapsed: seekToInSeconds,
+                    isPlaying: true
+                });
+                this.currentTrack.media.seekTo(seekToInSeconds);
+                // Do something
+                break;
+
+            // Headset events (Android only)
+            // All media button events are listed below
+            case 'music-controls-media-button':
+                // Do something
+                break;
+            case 'music-controls-headset-unplugged':
+                this.pauseCurrentTrack();
+                break;
+            case 'music-controls-headset-plugged':
+                // Do something
+                break;
+            default:
+                break;
+        }
     }
 
 
